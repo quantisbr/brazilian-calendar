@@ -1,10 +1,9 @@
 plugins {
     kotlin("jvm") version "1.6.10"
     `java-library`
+    `maven-publish`
 }
 
-group = "br.com.quantis.libraries"
-version = "1.0.0"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
@@ -21,4 +20,15 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "br.com.quantis.libraries"
+            artifactId = "brazilian-holidays"
+            version = "1.0.1"
+            from(components["java"])
+        }
+    }
 }
