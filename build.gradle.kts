@@ -27,7 +27,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "br.com.quantis.libraries"
             artifactId = "brazilian-holidays"
-            version = "1.0.1"
+            version = "1.0.0"
             from(components["java"])
         }
     }
