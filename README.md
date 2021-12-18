@@ -57,20 +57,20 @@ Or add the following to your **pom.xml**:
 
 ```kotlin
 val year = 2021
-println(year.toEasterDate())
-println(year.toCarnivalDate())
-println(year.toGoodFridayDate())
-println(year.toCorpusChristiDate())
+println("Carnival: " + year.toCarnivalDate())
+println("Good Friday: " + year.toGoodFridayDate())
+println("Easter: " + year.toEasterDate())
+println("Corpus Christi: " + year.toCorpusChristiDate())
 ```
 
 **Java:**
 
 ```java
 final int year = 2021;
-System.out.println(BrazilianHolidays.toEasterDate(year));
-System.out.println(BrazilianHolidays.toCarnivalDate(year));
-System.out.println(BrazilianHolidays.toGoodFridayDate(year));
-System.out.println(BrazilianHolidays.toCorpusChristiDate(year));
+System.out.println("Carnival: " + BrazilianHolidays.toCarnivalDate(year));
+System.out.println("Good Friday: " + BrazilianHolidays.toGoodFridayDate(year));
+System.out.println("Easter: " + BrazilianHolidays.toEasterDate(year));
+System.out.println("Corpus Christi: " + BrazilianHolidays.toCorpusChristiDate(year));
 ```
 
 ### Check if the date is a holiday
@@ -90,9 +90,9 @@ else
 ```java
 final LocalDate date = LocalDate.now();
 if (BrazilianHolidays.isNationalHoliday(date))
-    System.out.println(String.format("The '%s' is a holiday", date));
+    System.out.printf("The '%s' is a holiday%n", date);
 else
-    System.out.println(String.format("The '%s' is not a holiday", date));
+    System.out.printf("The '%s' is not a holiday%n", date);
 ```
 
 ### Check if the date is a bank public holiday
@@ -112,9 +112,9 @@ else
 ```java
 final LocalDate date = LocalDate.now();
 if (BrazilianHolidays.isBankHoliday(date))
-    System.out.println(String.format("The '%s' is a bank holiday", date));
+    System.out.printf("The '%s' is a bank holiday%n", date);
 else
-    System.out.println(String.format("The '%s' is not a bank holiday", date));
+    System.out.printf("The '%s' is not a bank holiday%n", date);
 ```
 
 ### Check if the date is a business day
@@ -123,7 +123,7 @@ else
 
 ```kotlin
 val date = LocalDate.now()
-if (date.isBusinessDay())
+if (date.isBusinessDay(false))
     println("The '$date' is a business day")
 else
     println("The '$date' is not a business day")
@@ -134,9 +134,9 @@ else
 ```java
 final LocalDate date = LocalDate.now();
 if (BrazilianHolidays.isBusinessDay(date, false))
-    System.out.println(String.format("The '%s' is a business day", date));
+    System.out.printf("The '%s' is a business day%n", date);
 else
-    System.out.println(String.format("The '%s' is not a business day", date));
+    System.out.printf("The '%s' is not a business day%n", date);
 ```
 
 ### Check if the date is a bank business day
@@ -156,9 +156,9 @@ else
 ```java
 final LocalDate date = LocalDate.now();
 if (BrazilianHolidays.isBankBusinessDay(date))
-    System.out.println(String.format("The '%s' is a bank business day", date));
+    System.out.printf("The '%s' is a bank business day%n", date);
 else
-    System.out.println(String.format("The '%s' is not a bank business day", date));
+    System.out.printf("The '%s' is not a bank business day%n", date);
 ```
 
 ### Count the number of business days in the date range
@@ -166,16 +166,16 @@ else
 **Kotlin:**
 
 ```kotlin
+import br.com.quantis.libraries.dates.DateRange
 import br.com.quantis.libraries.dates.holidays.brazil.countBusinessDays
-import br.com.quantis.libraries.dates.rangeTo
 import java.time.LocalDate
 
 ...
 
 val start = LocalDate.of(2019, 3, 12)
-val end  = LocalDate.of(2021, 11, 15)
-val range = start..end
-println("Number of business day: ${range.countBusinessDays()}")
+val end = LocalDate.of(2021, 11, 15)
+val range = DateRange(start, end)
+println("Number of business day: " + range.countBusinessDays())
 ```
 
 **Java:**
@@ -199,16 +199,16 @@ System.out.println("Number of business day: " + BrazilianHolidays.countBankBusin
 **Kotlin:**
 
 ```kotlin
+import br.com.quantis.libraries.dates.DateRange
 import br.com.quantis.libraries.dates.holidays.brazil.countBankBusinessDays
-import br.com.quantis.libraries.dates.rangeTo
 import java.time.LocalDate
 
 ...
 
 val start = LocalDate.of(2019, 3, 12)
-val end  = LocalDate.of(2021, 11, 15)
-val range = start..end
-println("Number of bank business day: ${range.countBankBusinessDays()}")
+val end = LocalDate.of(2021, 11, 15)
+val range = DateRange(start, end)
+println("Number of bank business day: " + range.countBankBusinessDays())
 ```
 
 **Java:**
