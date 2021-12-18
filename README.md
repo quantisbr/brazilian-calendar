@@ -1,4 +1,4 @@
-[![Release](https://img.shields.io/github/release/quantisbr/brazilian-holidays.svg?style=flat)](https://jitpack.io/#quantisbr/brazilian-holidays)
+[![Release](https://img.shields.io/github/release/quantisbr/brazilian-holidays.svg?style=flat)](https://jitpack.io/#quantisbr/brazilian-holidays/1.0.0)
 
 *Leia esta documentação em [Português](README.pt-br.md).*
 
