@@ -1,14 +1,14 @@
 [![Release](https://img.shields.io/github/release/quantisbr/brazilian-holidays.svg?style=flat)](https://jitpack.io/#quantisbr/brazilian-holidays)
 
-*Leia esta documentação em [Português](README.pt-br.md).*
+*Read this doc in [English](README.md).*
 
-# Brazilian Holidays
-_Brazilian Holidays_ is a Kotlin/Java library that provides resources to consult national holidays, bank holidays,
-business days, bank business days and dates of mobile religious events..
+# Feriados Brasilieiros
+_Feriados Brasileiros_ é uma biblioteca Kotlin/Java que prevê recursos para consultar feriados nacionais, 
+feriados bancários, dias uteis, dias uteis bancários e data de eventos religiosos móveis.
 
-## Dependency
+## Dependência
 
-Add the following to your **build.gradle** file:
+Adicione o seguinte ao seu arquivo **build.gradle**:
 
 ```groovy
 repositories {
@@ -21,7 +21,7 @@ dependencies {
 }
 ```
 
-Or add the following to your **build.gradle.kts**:
+Ou adicione o seguinte ao seu arquivo **build.gradle.kts**:
 
 ```kotlin
 repositories {
@@ -34,7 +34,7 @@ dependencies {
 }
 ```
 
-Or add the following to your **pom.xml**:
+Ou adicione o seguinte ao seu arquivo **pom.xml**:
 
 ```xml
 <repositories>
@@ -51,13 +51,13 @@ Or add the following to your **pom.xml**:
 </dependency>
 ```
 
-**No other dependencies required.**
+**Outras dependências não são necessárias.**
 
-## Using
+## Usando
 
-Access the example project [here](https://github.com/quantisbr/brazilian-holidays-example).
+Acesse o projeto de exemplo [aqui](https://github.com/quantisbr/brazilian-holidays-example).
 
-### Get the date of a mobile religious event from the year
+### Obtenha a data de um evento religioso móvel do ano
 
 **Kotlin:**
 
@@ -79,7 +79,7 @@ System.out.println("Easter: " + BrazilianHolidays.toEasterDate(year));
 System.out.println("Corpus Christi: " + BrazilianHolidays.toCorpusChristiDate(year));
 ```
 
-### Check if the date is a holiday
+### Verifique se a data é um feriado
 
 **Kotlin:**
 
@@ -101,7 +101,7 @@ else
     System.out.printf("The '%s' is not a holiday%n", date);
 ```
 
-### Check if the date is a bank public holiday
+### Verifique se a data é um feriado bancário
 
 **Kotlin:**
 
@@ -123,7 +123,7 @@ else
     System.out.printf("The '%s' is not a bank holiday%n", date);
 ```
 
-### Check if the date is a business day
+### Verifique se a data é um dia útil
 
 **Kotlin:**
 
@@ -145,7 +145,7 @@ else
     System.out.printf("The '%s' is not a business day%n", date);
 ```
 
-### Check if the date is a bank business day
+### Verifique se a data é um dia útil bancário
 
 **Kotlin:**
 
@@ -167,7 +167,7 @@ else
     System.out.printf("The '%s' is not a bank business day%n", date);
 ```
 
-### Count the number of business days in the date range
+### Conte o número de dias úteis no intervalo de datas
 
 **Kotlin:**
 
@@ -200,7 +200,7 @@ final DateRange range = new DateRange(start, end);
 System.out.println("Number of business day: " + BrazilianHolidays.countBankBusinessDays(range));
 ```
 
-### Count the number of bank business days in the date range
+### Conte o número de dias úteis bancários no intervalo de datas
 
 **Kotlin:**
 
