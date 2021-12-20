@@ -1,6 +1,5 @@
 package br.com.quantis.libraries.dates.holidays.brazil
 
-import br.com.quantis.libraries.dates.rangeTo
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -241,10 +240,12 @@ class BrazilianHolidaysTest {
 
     @Test
     fun `Should count the number of business day for the range`() {
-        val start = LocalDate.now().minusWeeks(12)!!
-        val end = LocalDate.now().plusMonths(7)!!
+        val start = LocalDate.now()
+        val end = LocalDate.now().plusDays(30)
+
+        val expectedCountBusinessDays = start.datesUntil(end).filter { date -> date.isBusinessDay() }.count()
+
         val range = start..end
-        val expectedCountBusinessDays = range.count { date -> date.isBusinessDay() }
         assertEquals(expectedCountBusinessDays, range.countBusinessDays())
     }
 
@@ -252,8 +253,10 @@ class BrazilianHolidaysTest {
     fun `Should count the number of business day for the range included Saturday`() {
         val start = LocalDate.now().minusWeeks(6)!!
         val end = LocalDate.now().plusMonths(11)!!
+
+        val expectedCountBusinessDays = start.datesUntil(end).filter { date -> date.isBusinessDay(true) }.count()
+
         val range = start..end
-        val expectedCountBusinessDays = range.count { date -> date.isBusinessDay(true) }
         assertEquals(expectedCountBusinessDays, range.countBusinessDays(true))
     }
 
@@ -261,9 +264,11 @@ class BrazilianHolidaysTest {
     fun `Should count the number of bank business day for the range included Saturday`() {
         val start = LocalDate.now().minusWeeks(8)!!
         val end = LocalDate.now().plusMonths(6)!!
+
+        val expectedBankCountBusinessDays = start.datesUntil(end).filter { date -> date.isBankBusinessDay() }.count()
+
         val range = start..end
-        val expectedCountBusinessDays = range.count { date -> date.isBankBusinessDay() }
-        assertEquals(expectedCountBusinessDays, range.countBankBusinessDays())
+        assertEquals(expectedBankCountBusinessDays, range.countBankBusinessDays())
     }
 
     @Test

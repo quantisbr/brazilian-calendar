@@ -16,8 +16,8 @@
 @file:JvmName("BrazilianHolidays")
 package br.com.quantis.libraries.dates.holidays.brazil
 
-import br.com.quantis.libraries.dates.DateRange
-import java.time.DayOfWeek.*
+import java.time.DayOfWeek.SATURDAY
+import java.time.DayOfWeek.SUNDAY
 import java.time.LocalDate
 import java.time.MonthDay
 import java.time.temporal.ChronoUnit
@@ -157,14 +157,21 @@ fun LocalDate.isBankBusinessDay(): Boolean {
  * @param includeSaturday Normally Saturday is not a working day, but there are situations that it should be considered. In these cases set the parameter to true
  * @return Returns the number of business day
  */
-fun DateRange.countBusinessDays(includeSaturday: Boolean = false) = this.count { date -> date.isBusinessDay(includeSaturday) }
+fun ClosedRange<LocalDate>.countBusinessDays(includeSaturday: Boolean = false): Long
+{
+    val datesUntil = this.start.datesUntil(this.endInclusive)
+    return datesUntil.filter { date -> date.isBusinessDay(includeSaturday) }.count()
+}
 
 /**
  * Count the number of bank business days in the range
  * @receiver Date range
  * @return Returns the number of bank business day
  */
-fun DateRange.countBankBusinessDays() = this.count { date -> date.isBankBusinessDay() }
+fun ClosedRange<LocalDate>.countBankBusinessDays(): Long {
+    val datesUntil = this.start.datesUntil(this.endInclusive)
+    return datesUntil.filter { date -> date.isBankBusinessDay() }.count()
+}
 
 /**
  * Count the number of calendar days in the range
