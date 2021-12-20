@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 class BrazilianHolidaysTest {
 
@@ -257,11 +258,20 @@ class BrazilianHolidaysTest {
     }
 
     @Test
-    fun `Should count the number of bank business day for the range`() {
-        val start = LocalDate.now().minusWeeks(12)!!
-        val end = LocalDate.now().plusMonths(7)!!
+    fun `Should count the number of bank business day for the range included Saturday`() {
+        val start = LocalDate.now().minusWeeks(8)!!
+        val end = LocalDate.now().plusMonths(6)!!
         val range = start..end
         val expectedCountBusinessDays = range.count { date -> date.isBankBusinessDay() }
         assertEquals(expectedCountBusinessDays, range.countBankBusinessDays())
+    }
+
+    @Test
+    fun `Should count the number of calendar days for the range`() {
+        val start = LocalDate.now().minusWeeks(10)!!
+        val end = LocalDate.now().plusMonths(4)!!
+        val range = start..end
+        val expectedCalendarDays = ChronoUnit.DAYS.between(start, end)
+        assertEquals(expectedCalendarDays, range.calendarDays())
     }
 }

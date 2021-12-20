@@ -20,6 +20,7 @@ import br.com.quantis.libraries.dates.DateRange
 import java.time.DayOfWeek.*
 import java.time.LocalDate
 import java.time.MonthDay
+import java.time.temporal.ChronoUnit
 
 typealias Year = Int
 
@@ -164,3 +165,10 @@ fun DateRange.countBusinessDays(includeSaturday: Boolean = false) = this.count {
  * @return Returns the number of bank business day
  */
 fun DateRange.countBankBusinessDays() = this.count { date -> date.isBankBusinessDay() }
+
+/**
+ * Count the number of calendar days in the range
+ * @receiver Date range
+ * @return Returns the number of calendar days in the range
+ */
+fun ClosedRange<LocalDate>.calendarDays() = ChronoUnit.DAYS.between(start, endInclusive)
