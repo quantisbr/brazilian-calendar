@@ -279,4 +279,37 @@ class BrazilianHolidaysTest {
         val expectedCalendarDays = ChronoUnit.DAYS.between(start, end)
         assertEquals(expectedCalendarDays, range.calendarDays())
     }
+
+    @Test
+    fun `Should return the next business day for informed date`() {
+        val date = LocalDate.of(2021, 12, 24)
+
+        var expected = date.plusDays(1)
+        while (!expected.isBusinessDay())
+            expected = expected.plusDays(1)
+
+        assertEquals(expected, date.nextBusinessDay())
+    }
+
+    @Test
+    fun `Should return the next business day for informed date including Saturday`() {
+        val date = LocalDate.of(2021, 12, 17)
+
+        var expected = date.plusDays(1)
+        while (!expected.isBusinessDay(true))
+            expected = expected.plusDays(1)
+
+        assertEquals(expected, date.nextBusinessDay(true))
+    }
+
+    @Test
+    fun `Should return the next bank business day for informed date`() {
+        val friday = 2021.toCarnivalDate().minusDays(4)
+
+        var expected = friday.plusDays(1)
+        while (!expected.isBankBusinessDay())
+            expected = expected.plusDays(1)
+
+        assertEquals(expected, friday.nextBankingBusinessDay())
+    }
 }

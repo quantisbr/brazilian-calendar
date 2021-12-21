@@ -117,7 +117,7 @@ fun LocalDate.isBankHoliday(): Boolean {
 /**
  * Check if the date entered is a business day.
  * @receiver Date to be verified
- * @param includeSaturday Normally Saturday is not a working day, but there are situations that it should be considered. In these cases set the parameter to true
+ * @param includeSaturday Normally Saturday is not a business day, but there are situations that it should be considered. In these cases set the parameter to true
  * @return Returns true if informed date is a business day
  */
 fun LocalDate.isBusinessDay(includeSaturday: Boolean = false): Boolean {
@@ -154,7 +154,7 @@ fun LocalDate.isBankBusinessDay(): Boolean {
 /**
  * Count the number of business days in the range
  * @receiver Date range
- * @param includeSaturday Normally Saturday is not a working day, but there are situations that it should be considered. In these cases set the parameter to true
+ * @param includeSaturday Normally Saturday is not a business day, but there are situations that it should be considered. In these cases set the parameter to true
  * @return Returns the number of business day
  */
 fun ClosedRange<LocalDate>.countBusinessDays(includeSaturday: Boolean = false): Long
@@ -178,4 +178,30 @@ fun ClosedRange<LocalDate>.countBankBusinessDays(): Long {
  * @receiver Date range
  * @return Returns the number of calendar days in the range
  */
-fun ClosedRange<LocalDate>.calendarDays() = ChronoUnit.DAYS.between(start, endInclusive)
+fun ClosedRange<LocalDate>.calendarDays(): Long = ChronoUnit.DAYS.between(start, endInclusive)
+
+
+/**
+ * Get the next business day
+ * @receiver Date
+ * @param includeSaturday Normally Saturday is not a business day, but there are situations that it should be considered. In these cases set the parameter to true
+ * @return Returns the next business day
+ */
+fun LocalDate.nextBusinessDay(includeSaturday: Boolean = false): LocalDate {
+    var result = this.plusDays(1)
+    while (!result.isBusinessDay(includeSaturday))
+        result = result.plusDays(1)
+    return result
+}
+
+/**
+ * Get the next banking business day
+ * @receiver Date
+ * @return Returns the next business day
+ */
+fun LocalDate.nextBankingBusinessDay(): LocalDate {
+    var result = this.plusDays(1)
+    while (!result.isBankBusinessDay())
+        result = result.plusDays(1)
+    return result
+}

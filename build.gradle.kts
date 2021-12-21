@@ -4,7 +4,7 @@ plugins {
     `maven-publish`
 }
 
-java.targetCompatibility = JavaVersion.VERSION_1_8
+java.targetCompatibility = JavaVersion.VERSION_1_9
 
 repositories {
     mavenCentral()
