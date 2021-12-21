@@ -4,6 +4,7 @@ plugins {
     `maven-publish`
 }
 
+java.sourceCompatibility = JavaVersion.VERSION_1_9
 java.targetCompatibility = JavaVersion.VERSION_1_9
 
 repositories {
@@ -20,6 +21,12 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = "1.9"
+    }
 }
 
 publishing {
