@@ -33,7 +33,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "com.github.quantisbr"
-            artifactId = "brazilian-holidays"
+            artifactId = "brazilian-calendar"
             version = "1.0.0"
             from(components["java"])
         }

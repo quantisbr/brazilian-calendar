@@ -1,9 +1,9 @@
-[![Release](https://img.shields.io/github/release/quantisbr/brazilian-holidays.svg?style=flat)](https://jitpack.io/#quantisbr/brazilian-holidays/1.0.0)
+[![Release](https://img.shields.io/github/release/quantisbr/brazilian-calendar.svg?style=flat)](https://jitpack.io/#quantisbr/brazilian-calendar/1.0.0)
 
 *Read this doc in [English](README.md).*
 
-# Feriados Brasilieiros
-_Feriados Brasileiros_ é uma biblioteca Kotlin/Java que prevê recursos para consultar feriados nacionais, 
+# Calendário brasileiro
+_Feriados brasileiro_ é uma biblioteca Kotlin/Java que prevê recursos para consultar feriados nacionais, 
 feriados bancários, dias uteis, dias uteis bancários e data de eventos religiosos móveis.
 
 ## Dependência
@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.quantisbr:brazilian-holidays:1.0.0'
+    implementation 'com.github.quantisbr:brazilian-calendar:1.0.0'
 }
 ```
 
@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.quantisbr:brazilian-holidays:1.0.0")
+    implementation("com.github.quantisbr:brazilian-calendar:1.0.0")
 }
 ```
 
@@ -46,7 +46,7 @@ Ou adicione o seguinte ao seu arquivo **pom.xml**:
 
 <dependency>
     <groupId>com.github.quantisbr</groupId>
-    <artifactId>brazilian-holidays</artifactId>
+    <artifactId>brazilian-calendar</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
@@ -55,7 +55,7 @@ Ou adicione o seguinte ao seu arquivo **pom.xml**:
 
 ## Usando
 
-Acesse o projeto de exemplo [aqui](https://github.com/quantisbr/brazilian-holidays-example).
+Acesse o projeto de exemplo [aqui](https://github.com/quantisbr/brazilian-calendar-example).
 
 ### Obtenha a data de um evento religioso móvel do ano
 
@@ -73,10 +73,10 @@ println("Corpus Christi: " + year.toCorpusChristiDate())
 
 ```java
 final int year = 2021;
-System.out.println("Carnival: " + BrazilianHolidays.toCarnivalDate(year));
-System.out.println("Good Friday: " + BrazilianHolidays.toGoodFridayDate(year));
-System.out.println("Easter: " + BrazilianHolidays.toEasterDate(year));
-System.out.println("Corpus Christi: " + BrazilianHolidays.toCorpusChristiDate(year));
+System.out.println("Carnival: " + MobileReligiousEvents.toCarnivalDate(year));
+System.out.println("Good Friday: " + MobileReligiousEvents.toGoodFridayDate(year));
+System.out.println("Easter: " + MobileReligiousEvents.toEasterDate(year));
+System.out.println("Corpus Christi: " + MobileReligiousEvents.toCorpusChristiDate(year));
 ```
 
 ### Verifique se a data é um feriado
@@ -95,7 +95,7 @@ else
 
 ```java
 final LocalDate date = LocalDate.now();
-if (BrazilianHolidays.isNationalHoliday(date))
+if (BrazilianCalendar.isNationalHoliday(date))
     System.out.printf("The '%s' is a holiday%n", date);
 else
     System.out.printf("The '%s' is not a holiday%n", date);
@@ -117,10 +117,10 @@ else
 
 ```java
 final LocalDate date = LocalDate.now();
-if (BrazilianHolidays.isBankHoliday(date))
-    System.out.printf("The '%s' is a bank holiday%n", date);
+if (BrazilianCalendar.isBankingHoliday(date))
+    System.out.printf("The '%s' is a banking holiday%n", date);
 else
-    System.out.printf("The '%s' is not a bank holiday%n", date);
+    System.out.printf("The '%s' is not a banking holiday%n", date);
 ```
 
 ### Verifique se a data é um dia útil
@@ -139,7 +139,7 @@ else
 
 ```java
 final LocalDate date = LocalDate.now();
-if (BrazilianHolidays.isBusinessDay(date, false))
+if (BrazilianCalendar.isBusinessDay(date, false))
     System.out.printf("The '%s' is a business day%n", date);
 else
     System.out.printf("The '%s' is not a business day%n", date);
@@ -161,7 +161,7 @@ else
 
 ```java
 final LocalDate date = LocalDate.now();
-if (BrazilianHolidays.isBankBusinessDay(date))
+if (BrazilianCalendar.isBankingBusinessDay(date))
     System.out.printf("The '%s' is a bank business day%n", date);
 else
     System.out.printf("The '%s' is not a bank business day%n", date);
@@ -172,12 +172,6 @@ else
 **Kotlin:**
 
 ```kotlin
-import br.com.quantis.libraries.dates.DateRange
-import br.com.quantis.libraries.dates.holidays.brazil.countBusinessDays
-import java.time.LocalDate
-
-...
-
 val start = LocalDate.of(2019, 3, 12)
 val end = LocalDate.of(2021, 11, 15)
 val range = DateRange(start, end)
@@ -187,17 +181,10 @@ println("Number of business day: " + range.countBusinessDays())
 **Java:**
 
 ```java
-import br.com.quantis.libraries.dates.DateRange;
-import br.com.quantis.libraries.dates.holidays.brazil.BrazilianHolidays;
-import java.time.LocalDate;
-
-...
-
 final LocalDate start = LocalDate.of(2019, 3, 12);
 final LocalDate end = LocalDate.of(2021, 11, 15);
-final DateRange range = new DateRange(start, end);
 
-System.out.println("Number of business day: " + BrazilianHolidays.countBankBusinessDays(range));
+System.out.println("Number of business day: " + BrazilianCalendar.countBusinessDays(start, end, false));
 ```
 
 ### Conte o número de dias úteis bancários no intervalo de datas
@@ -205,12 +192,6 @@ System.out.println("Number of business day: " + BrazilianHolidays.countBankBusin
 **Kotlin:**
 
 ```kotlin
-import br.com.quantis.libraries.dates.DateRange
-import br.com.quantis.libraries.dates.holidays.brazil.countBankBusinessDays
-import java.time.LocalDate
-
-...
-
 val start = LocalDate.of(2019, 3, 12)
 val end = LocalDate.of(2021, 11, 15)
 val range = DateRange(start, end)
@@ -220,15 +201,8 @@ println("Number of bank business day: " + range.countBankBusinessDays())
 **Java:**
 
 ```java
-import br.com.quantis.libraries.dates.DateRange;
-import br.com.quantis.libraries.dates.holidays.brazil.BrazilianHolidays;
-import java.time.LocalDate;
-
-...
-
 final LocalDate start = LocalDate.of(2019, 3, 12);
 final LocalDate end = LocalDate.of(2021, 11, 15);
-final DateRange range = new DateRange(start, end);
 
-System.out.println("Number of bank business day: " + BrazilianHolidays.countBankBusinessDays(range));
+System.out.println("Number of bank business day: " + BrazilianCalendar.countBankingBusinessDays(start, end));
 ```

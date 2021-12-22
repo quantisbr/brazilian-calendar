@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@file:JvmName("BrazilianHolidays")
-package br.com.quantis.libraries.dates.holidays.brazil
+@file:JvmName("BrazilianCalendar")
+package br.com.quantis.libraries.calendar.brazil
 
+import br.com.quantis.libraries.calendar.religious.toCarnivalDate
+import br.com.quantis.libraries.calendar.religious.toCorpusChristiDate
+import br.com.quantis.libraries.calendar.religious.toGoodFridayDate
 import java.time.DayOfWeek.SATURDAY
 import java.time.DayOfWeek.SUNDAY
 import java.time.LocalDate
 import java.time.MonthDay
 import java.time.temporal.ChronoUnit
-
-typealias Year = Int
 
 private val fixedHolidays = setOf<MonthDay>(
     MonthDay.of(1, 1), //Universal Day
@@ -36,52 +37,6 @@ private val fixedHolidays = setOf<MonthDay>(
 )
 
 /**
- * Converts informed year to Easter date
- * @receiver Year of Easter. Used to calculate the day and month of Easter
- * @return Date of Easter
- */
-fun Year.toEasterDate(): LocalDate {
-    val year = this
-    val a = year % 19
-    val b = year / 100
-    val c = year % 100
-    val d = b / 4
-    val e = b % 4
-    val f = (b + 8) / 25
-    val g = (b - f + 1) / 3
-    val h = (19 * a + b - d - g + 15) % 30
-    val i = c / 4
-    val k = c % 4
-    val l = (32 + 2 * e + 2 * i - h - k) % 7
-    val m = (a + 11 * h + 22 * l) / 451
-    val month = (h + l - 7 * m + 114) / 31
-    val day = 1+ (h + l - 7 * m + 114)% 31
-
-    return LocalDate.of(year, month, day)
-}
-
-/**
- * Converts informed year to Carnival date
- * @receiver Year of Carnival. Used to calculate the day and month of Carnival
- * @return Date of Carnival
- */
-fun Year.toCarnivalDate(): LocalDate = this.toEasterDate().minusDays(47)
-
-/**
- * Converts informed year to Good Friday date
- * @receiver Year of Good Friday. Used to calculate the day and month of Good Friday
- * @return Date of Good Friday
- */
-fun Year.toGoodFridayDate(): LocalDate = this.toEasterDate().minusDays(2)
-
-/**
- * Converts informed year to Corpus Christi date
- * @receiver Year of Corpus Christi. Used to calculate the day and month of Corpus Christi
- * @return Date of Corpus Christi
- */
-fun Year.toCorpusChristiDate(): LocalDate = this.toEasterDate().plusDays(60)
-
-/**
  * Check if the date entered is a national holiday. Includes all fixed and mobile holidays.
  * __Note: Carnival and Corpus Christi are not holidays. They are optional day off__
  * @receiver Date to be verified
@@ -93,12 +48,12 @@ fun LocalDate.isNationalHoliday(): Boolean {
 }
 
 /**
- * Check if the date entered is a bank public holiday. Includes all fixed and mobile holidays.
+ * Check if the date entered is a banking holiday. Includes all fixed and mobile holidays.
  * __Note: Carnival, Carnival Monday and Corpus Christi are not holidays, but traditionally banks close on these days, according to data from [Febraban](https://feriadosbancarios.febraban.org.br/)__
  * @receiver Date to be verified
- * @return Returns true if informed date is a bank public holiday
+ * @return Returns true if informed date is a banking holiday
  */
-fun LocalDate.isBankHoliday(): Boolean {
+fun LocalDate.isBankingHoliday(): Boolean {
     if (this.isNationalHoliday())
         return true
 
@@ -134,21 +89,34 @@ fun LocalDate.isBusinessDay(includeSaturday: Boolean = false): Boolean {
 }
 
 /**
- * Check if the date entered is a bank business day.
+ * Check if the date entered is a banking business day.
  * @receiver Date to be verified
  * @return Returns true if informed date is a bank business day
  */
-fun LocalDate.isBankBusinessDay(): Boolean {
+fun LocalDate.isBankingBusinessDay(): Boolean {
     if (this.dayOfWeek == SATURDAY)
         return false
 
     if (this.dayOfWeek == SUNDAY)
         return false
 
-    if (this.isBankHoliday())
+    if (this.isBankingHoliday())
         return false
 
     return true
+}
+
+/**
+ * Count the number of business days in the informed date range
+ * @param start Start date (inclusive)
+ * @param endInclusive End date (inclusive)
+ * @param includeSaturday Normally Saturday is not a business day, but there are situations that it should be considered. In these cases set the parameter to true
+ * @return Returns the number of business days in the informed date range
+ */
+fun countBusinessDays(start: LocalDate, endInclusive: LocalDate, includeSaturday: Boolean = false): Long
+{
+    val allDates = allDates(start, endInclusive)
+    return allDates.filter { date -> date.isBusinessDay(includeSaturday) }.count()
 }
 
 /**
@@ -159,18 +127,32 @@ fun LocalDate.isBankBusinessDay(): Boolean {
  */
 fun ClosedRange<LocalDate>.countBusinessDays(includeSaturday: Boolean = false): Long
 {
-    val datesUntil = this.start.datesUntil(this.endInclusive)
-    return datesUntil.filter { date -> date.isBusinessDay(includeSaturday) }.count()
+    val allDates = allDates(this.start, this.endInclusive)
+    return allDates.filter { date -> date.isBusinessDay(includeSaturday) }.count()
 }
 
+private fun allDates(start: LocalDate, endInclusive: LocalDate) = start.datesUntil(endInclusive.plusDays(1))
+
 /**
- * Count the number of bank business days in the range
- * @receiver Date range
- * @return Returns the number of bank business day
+ * Count the number of banking business days in the informed date range
+ * @param start Start date (inclusive)
+ * @param endInclusive End date (inclusive)
+ * @return Returns the number of banking business days in the informed date range
  */
-fun ClosedRange<LocalDate>.countBankBusinessDays(): Long {
-    val datesUntil = this.start.datesUntil(this.endInclusive)
-    return datesUntil.filter { date -> date.isBankBusinessDay() }.count()
+fun countBankingBusinessDays(start: LocalDate, endInclusive: LocalDate): Long {
+    val allDates = allDates(start, endInclusive)
+    return allDates.filter { date -> date.isBankingBusinessDay() }.count()
+}
+
+
+/**
+ * Count the number of banking business days in the range
+ * @receiver Date range
+ * @return Returns the number of banking business day
+ */
+fun ClosedRange<LocalDate>.countBankingBusinessDays(): Long {
+    val allDates = allDates(this.start, this.endInclusive)
+    return allDates.filter { date -> date.isBankingBusinessDay() }.count()
 }
 
 /**
@@ -178,7 +160,15 @@ fun ClosedRange<LocalDate>.countBankBusinessDays(): Long {
  * @receiver Date range
  * @return Returns the number of calendar days in the range
  */
-fun ClosedRange<LocalDate>.calendarDays(): Long = ChronoUnit.DAYS.between(start, endInclusive)
+fun ClosedRange<LocalDate>.calendarDays(): Long = calendarDays(start, endInclusive)
+
+/**
+ * Count the number of calendar days in the range of informed dates
+ * @param start Start date (inclusive)
+ * @param endInclusive End date (inclusive)
+ * @return Returns the number of calendar days in the of informed dates
+ */
+fun calendarDays(start: LocalDate, endInclusive: LocalDate): Long = ChronoUnit.DAYS.between(start, endInclusive)
 
 
 /**
@@ -201,7 +191,7 @@ fun LocalDate.nextBusinessDay(includeSaturday: Boolean = false): LocalDate {
  */
 fun LocalDate.nextBankingBusinessDay(): LocalDate {
     var result = this.plusDays(1)
-    while (!result.isBankBusinessDay())
+    while (!result.isBankingBusinessDay())
         result = result.plusDays(1)
     return result
 }

@@ -1,2 +1,2 @@
-rootProject.name = "brazilian-holidays"
+rootProject.name = "brazilian-calendar"
 

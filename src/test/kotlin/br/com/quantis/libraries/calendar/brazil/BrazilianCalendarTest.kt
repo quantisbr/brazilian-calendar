@@ -1,116 +1,72 @@
-package br.com.quantis.libraries.dates.holidays.brazil
+package br.com.quantis.libraries.calendar.brazil
 
+import br.com.quantis.libraries.calendar.religious.toCarnivalDate
+import br.com.quantis.libraries.calendar.religious.toCorpusChristiDate
+import br.com.quantis.libraries.calendar.religious.toGoodFridayDate
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-class BrazilianHolidaysTest {
-
-    @Test
-    fun `Test convert year to easter date`() {
-        val year = 2019
-        val a = year % 19
-        val b = year / 100
-        val c = year % 100
-        val d = b / 4
-        val e = b % 4
-        val f = (b + 8) / 25
-        val g = (b - f + 1) / 3
-        val h = (19 * a + b - d - g + 15) % 30
-        val i = c / 4
-        val k = c % 4
-        val l = (32 + 2 * e + 2 * i - h - k) % 7
-        val m = (a + 11 * h + 22 * l) / 451
-        val month = (h + l - 7 * m + 114) / 31
-        val day = 1+ (h + l - 7 * m + 114)% 31
-
-        val pascoa = LocalDate.of(year, month, day)
-        assertEquals(pascoa, year.toEasterDate())
-    }
-
-    @Test
-    fun `Test convert year to carnival date`() {
-        val year = 2020
-        val easter = year.toEasterDate()
-        val carnival = easter.minusDays(47)
-        assertEquals(carnival, year.toCarnivalDate())
-    }
-
-    @Test
-    fun `Test convert year to Good Friday date`() {
-        val year = 2017
-        val easter = year.toEasterDate()
-        val goodFriday = easter.minusDays(2)
-        assertEquals(goodFriday, year.toGoodFridayDate())
-    }
-
-    @Test
-    fun `Test convert year to Corpus Christi date`() {
-        val year = 2021
-        val easter = year.toEasterDate()
-        val corpusChristiDate = easter.plusDays(60)
-        assertEquals(corpusChristiDate, year.toCorpusChristiDate())
-    }
+class BrazilianCalendarTest {
 
     @Test
     fun `Test if Universal Day is a national holiday`() {
         val date = LocalDate.of(2022, 1, 1)
-        Assertions.assertTrue(date.isNationalHoliday())
+        assertTrue(date.isNationalHoliday())
     }
 
     @Test
     fun `Test if Tiradentes is a national holiday`() {
         val date = LocalDate.of(2016, 4, 21)
-        Assertions.assertTrue(date.isNationalHoliday())
+        assertTrue(date.isNationalHoliday())
     }
 
     @Test
     fun `Test if Labour Day is a national holiday`() {
         val date = LocalDate.of(2020, 5, 1)
-        Assertions.assertTrue(date.isNationalHoliday())
+        assertTrue(date.isNationalHoliday())
     }
 
     @Test
     fun `Test if Independence Day is a national holiday`() {
         val date = LocalDate.of(2020, 9, 7)
-        Assertions.assertTrue(date.isNationalHoliday())
+        assertTrue(date.isNationalHoliday())
     }
 
     @Test
     fun `Test if Our Lady of Conception Aparecida Day is a national holiday`() {
         val date = LocalDate.of(2015, 10, 12)
-        Assertions.assertTrue(date.isNationalHoliday())
+        assertTrue(date.isNationalHoliday())
     }
 
     @Test
     fun `Test if All Souls Day is a national holiday`() {
         val date = LocalDate.of(2021, 11, 2)
-        Assertions.assertTrue(date.isNationalHoliday())
+        assertTrue(date.isNationalHoliday())
     }
 
     @Test
     fun `Test if Proclamation of the Republic Day is a national holiday`() {
         val date = LocalDate.of(2021, 11, 15)
-        Assertions.assertTrue(date.isNationalHoliday())
+        assertTrue(date.isNationalHoliday())
     }
 
     @Test
     fun `Test if Christmas Day is a national holiday`() {
         val date = LocalDate.of(1990, 12, 25)
-        Assertions.assertTrue(date.isNationalHoliday())
+        assertTrue(date.isNationalHoliday())
     }
 
     @Test
     fun `Test if Good Friday is a national holiday`() {
         val date = 1962.toGoodFridayDate()
-        Assertions.assertTrue(date.isNationalHoliday())
+        assertTrue(date.isNationalHoliday())
     }
 
     @Test
@@ -119,7 +75,7 @@ class BrazilianHolidaysTest {
             val nationalHoliday = mockk<LocalDate>()
             every { nationalHoliday.isNationalHoliday() } returns true
 
-            Assertions.assertTrue(nationalHoliday.isBankHoliday())
+            assertTrue(nationalHoliday.isBankingHoliday())
 
             verify(exactly = 1) { nationalHoliday.isNationalHoliday() }
         }
@@ -128,19 +84,19 @@ class BrazilianHolidaysTest {
     @Test
     fun `Test if Carnival Monday is bank public holiday`() {
         val carnivalMonday =  2022.toCarnivalDate().minusDays(1)
-        Assertions.assertTrue(carnivalMonday.isBankHoliday())
+        assertTrue(carnivalMonday.isBankingHoliday())
     }
 
     @Test
     fun `Test if Carnival is bank public holiday`() {
         val carnival =  2023.toCarnivalDate()
-        Assertions.assertTrue(carnival.isBankHoliday())
+        assertTrue(carnival.isBankingHoliday())
     }
 
     @Test
     fun `Test if Corpus Christi day is bank public holiday`() {
         val corpusChristis =  2024.toCorpusChristiDate()
-        Assertions.assertTrue(corpusChristis.isBankHoliday())
+        assertTrue(corpusChristis.isBankingHoliday())
     }
 
     @Test
@@ -150,7 +106,7 @@ class BrazilianHolidaysTest {
             every { nationalHoliday.dayOfWeek } returns DayOfWeek.THURSDAY
             every { nationalHoliday.isNationalHoliday() } returns true
 
-            Assertions.assertFalse(nationalHoliday.isBusinessDay())
+            assertFalse(nationalHoliday.isBusinessDay())
 
             verify(exactly = 1) { nationalHoliday.isNationalHoliday() }
         }
@@ -163,7 +119,7 @@ class BrazilianHolidaysTest {
             every { sunday.isNationalHoliday() } returns false
             every { sunday.dayOfWeek } returns DayOfWeek.SUNDAY
 
-            Assertions.assertFalse(sunday.isBusinessDay())
+            assertFalse(sunday.isBusinessDay())
 
             verify { sunday.dayOfWeek }
             verify(exactly = 0) { sunday.isNationalHoliday() }
@@ -177,7 +133,7 @@ class BrazilianHolidaysTest {
             every { saturday.isNationalHoliday() } returns false
             every { saturday.dayOfWeek } returns DayOfWeek.SATURDAY
 
-            Assertions.assertFalse(saturday.isBusinessDay())
+            assertFalse(saturday.isBusinessDay())
 
             verify { saturday.dayOfWeek }
             verify(exactly = 0) { saturday.isNationalHoliday() }
@@ -191,7 +147,7 @@ class BrazilianHolidaysTest {
             every { saturday.isNationalHoliday() } returns false
             every { saturday.dayOfWeek } returns DayOfWeek.SATURDAY
 
-            Assertions.assertTrue(saturday.isBusinessDay(includeSaturday = true))
+            assertTrue(saturday.isBusinessDay(includeSaturday = true))
 
             verify { saturday.dayOfWeek }
         }
@@ -199,43 +155,52 @@ class BrazilianHolidaysTest {
 
     @Test
     fun `Test any bank public holiday is not a business day`() {
-        mockkStatic(LocalDate::isBankHoliday) {
+        mockkStatic(LocalDate::isBankingHoliday) {
             val bankHoliday = mockk<LocalDate>()
             every { bankHoliday.dayOfWeek } returns DayOfWeek.FRIDAY
-            every { bankHoliday.isBankHoliday() } returns true
+            every { bankHoliday.isBankingHoliday() } returns true
 
-            Assertions.assertFalse(bankHoliday.isBankBusinessDay())
+            assertFalse(bankHoliday.isBankingBusinessDay())
 
-            verify(exactly = 1) { bankHoliday.isBankHoliday() }
+            verify(exactly = 1) { bankHoliday.isBankingHoliday() }
         }
     }
 
     @Test
-    fun `Test any Saturday is not a bank business day`() {
-        mockkStatic(LocalDate::isBankHoliday) {
+    fun `Test any Saturday is not a banking business day`() {
+        mockkStatic(LocalDate::isBankingHoliday) {
             val saturday = mockk<LocalDate>()
-            every { saturday.isBankHoliday() } returns false
+            every { saturday.isBankingHoliday() } returns false
             every { saturday.dayOfWeek } returns DayOfWeek.SATURDAY
 
-            Assertions.assertFalse(saturday.isBankBusinessDay())
+            assertFalse(saturday.isBankingBusinessDay())
 
             verify { saturday.dayOfWeek }
-            verify(exactly = 0) { saturday.isBankHoliday() }
+            verify(exactly = 0) { saturday.isBankingHoliday() }
         }
     }
 
     @Test
-    fun `Test any Sunday is not a bank business day`() {
-        mockkStatic(LocalDate::isBankHoliday) {
+    fun `Test any Sunday is not a banking business day`() {
+        mockkStatic(LocalDate::isBankingHoliday) {
             val sunday = mockk<LocalDate>()
-            every { sunday.isBankHoliday() } returns false
+            every { sunday.isBankingHoliday() } returns false
             every { sunday.dayOfWeek } returns DayOfWeek.SUNDAY
 
-            Assertions.assertFalse(sunday.isBankBusinessDay())
+            assertFalse(sunday.isBankingBusinessDay())
 
             verify { sunday.dayOfWeek }
-            verify(exactly = 0) { sunday.isBankHoliday() }
+            verify(exactly = 0) { sunday.isBankingHoliday() }
         }
+    }
+
+    @Test
+    fun `Should count the number of business day for the informed date range`() {
+        val start = LocalDate.now()
+        val end = LocalDate.now().plusDays(30)
+
+        val expectedCountBusinessDays = start.datesUntil(end.plusDays(1)).filter { date -> date.isBusinessDay() }.count()
+        assertEquals(expectedCountBusinessDays, countBusinessDays(start, end))
     }
 
     @Test
@@ -243,38 +208,65 @@ class BrazilianHolidaysTest {
         val start = LocalDate.now()
         val end = LocalDate.now().plusDays(30)
 
-        val expectedCountBusinessDays = start.datesUntil(end).filter { date -> date.isBusinessDay() }.count()
+        val expectedCountBusinessDays = start.datesUntil(end.plusDays(1)).filter { date -> date.isBusinessDay() }.count()
 
         val range = start..end
         assertEquals(expectedCountBusinessDays, range.countBusinessDays())
     }
 
     @Test
-    fun `Should count the number of business day for the range included Saturday`() {
+    fun `Should count the number of business day for the informed date range including Saturday`() {
+        val start = LocalDate.now()
+        val end = LocalDate.now().plusDays(30)
+
+        val expectedCountBusinessDays = start.datesUntil(end.plusDays(1)).filter { date -> date.isBusinessDay(true) }.count()
+        assertEquals(expectedCountBusinessDays, countBusinessDays(start, end, true))
+    }
+
+    @Test
+    fun `Should count the number of business day for the range including Saturday`() {
         val start = LocalDate.now().minusWeeks(6)!!
         val end = LocalDate.now().plusMonths(11)!!
 
-        val expectedCountBusinessDays = start.datesUntil(end).filter { date -> date.isBusinessDay(true) }.count()
+        val expectedCountBusinessDays = start.datesUntil(end.plusDays(1)).filter { date -> date.isBusinessDay(true) }.count()
 
         val range = start..end
         assertEquals(expectedCountBusinessDays, range.countBusinessDays(true))
     }
 
     @Test
-    fun `Should count the number of bank business day for the range included Saturday`() {
+    fun `Should count the number of banking business day for the informed date range`() {
         val start = LocalDate.now().minusWeeks(8)!!
         val end = LocalDate.now().plusMonths(6)!!
 
-        val expectedBankCountBusinessDays = start.datesUntil(end).filter { date -> date.isBankBusinessDay() }.count()
+        val expectedBankCountBusinessDays = start.datesUntil(end.plusDays(1)).filter { date -> date.isBankingBusinessDay() }.count()
+
+        assertEquals(expectedBankCountBusinessDays, countBankingBusinessDays(start, end))
+    }
+
+    @Test
+    fun `Should count the number of banking business day for the range`() {
+        val start = LocalDate.now().minusWeeks(8)!!
+        val end = LocalDate.now().plusMonths(6)!!
+
+        val expectedBankingCountBusinessDays = start.datesUntil(end.plusDays(1)).filter { date -> date.isBankingBusinessDay() }.count()
 
         val range = start..end
-        assertEquals(expectedBankCountBusinessDays, range.countBankBusinessDays())
+        assertEquals(expectedBankingCountBusinessDays, range.countBankingBusinessDays())
+    }
+
+    @Test
+    fun `Should count the number of calendar days in the range of informed dates`() {
+        val start = LocalDate.of(2020, 1, 1)
+        val end = LocalDate.of(2020, 1, 31)
+        val expectedCalendarDays = ChronoUnit.DAYS.between(start, end)
+        assertEquals(expectedCalendarDays, calendarDays(start, end))
     }
 
     @Test
     fun `Should count the number of calendar days for the range`() {
-        val start = LocalDate.now().minusWeeks(10)!!
-        val end = LocalDate.now().plusMonths(4)!!
+        val start = LocalDate.of(2020, 1, 1)
+        val end = LocalDate.of(2020, 1, 31)
         val range = start..end
         val expectedCalendarDays = ChronoUnit.DAYS.between(start, end)
         assertEquals(expectedCalendarDays, range.calendarDays())
@@ -303,11 +295,11 @@ class BrazilianHolidaysTest {
     }
 
     @Test
-    fun `Should return the next bank business day for informed date`() {
+    fun `Should return the next banking business day for informed date`() {
         val friday = 2021.toCarnivalDate().minusDays(4)
 
         var expected = friday.plusDays(1)
-        while (!expected.isBankBusinessDay())
+        while (!expected.isBankingBusinessDay())
             expected = expected.plusDays(1)
 
         assertEquals(expected, friday.nextBankingBusinessDay())
