@@ -207,3 +207,36 @@ final LocalDate end = LocalDate.of(2021, 11, 15);
 
 System.out.println("Number of banking business day: " + BrazilianCalendar.countBankingBusinessDays(start, end));
 ```
+
+### Get the next business day
+
+**Kotlin:**
+
+```kotlin
+val date = LocalDate.now()
+println("Next business day after $date is ${date.nextBusinessDay()}")
+```
+
+**Java:**
+
+```java
+final LocalDate date = LocalDate.now();
+System.out.printf("Next business day after %s is %s%n", date, BrazilianCalendar.nextBusinessDay(date, true));
+```
+
+
+### Get the next banking business day
+
+**Kotlin:**
+
+```kotlin
+val date = LocalDate.now()
+println("Next banking business day after $date is ${date.nextBusinessDay()}")
+```
+
+**Java:**
+
+```java
+final LocalDate date = LocalDate.now();
+System.out.printf("Next banking business day after %s is %s%n", date, BrazilianCalendar.nextBankingBusinessDay(date));
+```
