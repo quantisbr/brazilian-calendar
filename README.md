@@ -3,8 +3,8 @@
 *Leia esta documentação em [Português](README.pt-br.md).*
 
 # Brazilian Calendar
-_Brazilian Calendar_ is a Kotlin/Java library that provides resources to consult national holidays, bank holidays,
-business days, bank business days and dates of mobile religious events.
+_Brazilian Calendar_ is a Kotlin/Java library that provides resources to consult national holidays, banking holidays,
+business days, banking business days and dates of mobile religious events.
 
 ## Dependency
 
