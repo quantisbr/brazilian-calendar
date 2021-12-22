@@ -101,16 +101,16 @@ else
     System.out.printf("The '%s' is not a holiday%n", date);
 ```
 
-### Check if the date is a banking public holiday
+### Check if the date is a banking holiday
 
 **Kotlin:**
 
 ```kotlin
 val date = LocalDate.now()
-if (date.isBankingkHoliday())
+if (date.isBankingHoliday())
     println("The '$date' is a banking holiday")
 else
-    println("The '$date' is not a bank holiday")
+    println("The '$date' is not a banking holiday")
 ```
 
 **Java:**
@@ -151,10 +151,10 @@ else
 
 ```kotlin
 val date = LocalDate.now()
-if (date.isBankBusinessDay())
-    println("The '$date' is a bank business day")
+if (date.isBankingBusinessDay())
+    println("The '$date' is a banking business day")
 else
-    println("The '$date' is not a bank business day")
+    println("The '$date' is not a banking business day")
 ```
 
 **Java:**
