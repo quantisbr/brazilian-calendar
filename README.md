@@ -194,8 +194,9 @@ System.out.println("Number of business day: " + BrazilianCalendar.countBusinessD
 ```kotlin
 val start = LocalDate.of(2019, 3, 12)
 val end = LocalDate.of(2021, 11, 15)
-val range = DateRange(start, end)
-println("Number of bank business day: " + range.countBankBusinessDays())
+val range = start..end
+
+println("Number of banking business day: " + range.countBankingBusinessDays())
 ```
 
 **Java:**
@@ -204,5 +205,5 @@ println("Number of bank business day: " + range.countBankBusinessDays())
 final LocalDate start = LocalDate.of(2019, 3, 12);
 final LocalDate end = LocalDate.of(2021, 11, 15);
 
-System.out.println("Number of bank business day: " + BrazilianCalendar.countBankingBusinessDays(start, end));
+System.out.println("Number of banking business day: " + BrazilianCalendar.countBankingBusinessDays(start, end));
 ```

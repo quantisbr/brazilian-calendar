@@ -162,9 +162,9 @@ else
 ```java
 final LocalDate date = LocalDate.now();
 if (BrazilianCalendar.isBankingBusinessDay(date))
-    System.out.printf("The '%s' is a bank business day%n", date);
+    System.out.printf("The '%s' is a banking business day%n", date);
 else
-    System.out.printf("The '%s' is not a bank business day%n", date);
+    System.out.printf("The '%s' is not a banking business day%n", date);
 ```
 
 ### Conte o número de dias úteis no intervalo de datas
@@ -194,8 +194,9 @@ System.out.println("Number of business day: " + BrazilianCalendar.countBusinessD
 ```kotlin
 val start = LocalDate.of(2019, 3, 12)
 val end = LocalDate.of(2021, 11, 15)
-val range = DateRange(start, end)
-println("Number of bank business day: " + range.countBankBusinessDays())
+val range = start..end
+
+println("Number of banking business day: " + range.countBankingBusinessDays())
 ```
 
 **Java:**
